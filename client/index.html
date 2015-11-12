@@ -58,6 +58,8 @@
 				});
 			});
 
+			$scope.username = username;
+
 			$document.find('#mesg').on('keydown', function( e ){
 				
 				if (e.keyCode == 13) {
@@ -106,6 +108,7 @@
 
 	<div class="card">
 		<div class="card-content">
+			Your are {{ username }} now.
 			<input type="text" ng-model="userMessage" id="mesg" />
 		</div>
 	</div>
