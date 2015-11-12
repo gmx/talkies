@@ -1,0 +1,31 @@
+{
+  "name": "talkies",
+  "authors": [
+    "GMX <moethetster@gmail.com>"
+  ],
+  "description": "client for chat app with random users",
+  "main": "index.html",
+  "moduleType": [],
+  "keywords": [
+    "chat",
+    "random",
+    "user"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.4.7",
+    "ng-materialize": "~0.1.2",
+    "angular-perfect-scrollbar": "~0.0.4",
+    "sockjs-client": "~1.0.3",
+    "faker": "~0.0.2",
+    "underscore": "~1.8.3"
+  }
+}

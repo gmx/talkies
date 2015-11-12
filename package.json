@@ -1,0 +1,24 @@
+{
+  "name": "talkies",
+  "version": "0.0.0",
+  "description": "Just a small group chat app with random username",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.13.3",
+    "sockjs": "^0.3.15",
+    "underscore": "^1.8.3",
+    "sillyname": "^0.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "chat",
+    "random",
+    "users"
+  ],
+  "author": "gmx",
+  "license": "ISC"
+}
