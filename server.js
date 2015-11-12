@@ -29,7 +29,7 @@ chat.on( 'connection', function( conn ){
 
 });
 
-var server = http.createServer( app ).listen( 80 );
+var server = http.createServer( app ).listen( 3000 );
 
 chat.installHandlers( server, { prefix: '/chat' });
 
