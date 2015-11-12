@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="bower_components/ng-materialize/dist/ng-materialize.min.css">
+	<link rel="stylesheet" href="bower_components/perfect-scrollbar/min/perfect-scrollbar.min.css" />
+
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="bower_components/perfect-scrollbar/min/perfect-scrollbar.min.js"></script>
+
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="bower_components/faker/dist/faker.min.js"></script>
+	<script src="bower_components/angular/angular.min.js"></script>
+	<script src="bower_components/angular-perfect-scrollbar/src/angular-perfect-scrollbar.js"></script>
+	<script src="bower_components/ng-materialize/dist/ng-materialize.min.js"></script>
+	<script src="bower_components/underscore/underscore-min.js"></script>
+
+	<script src="//cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
+	
+	<script>
+		
+		var username = faker.directive('lastName')().toLowerCase();
+
+		var mod = angular.module( 'talkApp', [ 'perfect_scrollbar' ]);
+		
+		mod.service( 'socket', function(){
+
+			var sock = new SockJS('http://localhost:3000/chat');
+			var callbacks = [];
+
+			sock.onopen = function() {
+				console.log( 'Connection established to socket server' );
+			};
+
+			sock.onmessage = function( e ) {
+				_.each( callbacks, function( fn ){
+					fn.apply( sock, [ JSON.parse(e.data) ]);	
+				});
+			};
+			
+			this.receive = function( callback ) {
+				callbacks.push( callback );	
+			};
+
+			this.send = function( mesg ) {
+				sock.send(JSON.stringify( mesg ));	
+			};
+		});
+		
+		mod.controller( 'talkCtrl', function( $scope, $document, socket ) {
+			
+			$scope.messages = [];
+			
+			socket.receive(function( mesg ){
+				$scope.$apply(function(){
+					$scope.messages.push( mesg );
+				});
+			});
+
+			$document.find('#mesg').on('keydown', function( e ){
+				
+				if (e.keyCode == 13) {
+
+					$scope.$apply(function(){
+
+						var mesg = {
+							username: username,
+							message: $scope.userMessage
+						};
+						
+						$scope.messages.push( mesg );
+						socket.send( mesg );
+
+						$scope.userMessage = '';
+						
+					});
+				}
+
+			});
+
+		});
+		
+		
+
+	</script>
+</head>
+<body ng-app="talkApp">
+<div class="container" ng-controller="talkCtrl">
+
+	<div class="card">
+		<div class="card-content">
+			<div class="row">
+				<div class="col m12">
+					<h1 style="font-family: Comfortaa; font-size: 1.2em;">Talkies and Talkers</h1>
+				</div>
+			</div>
+
+			<div class="row" style="margin-bottom: 5px" ng-repeat="mesg in messages">
+				<div class="col s2">{{ mesg.username }} <span class="pull-right">:</span></div>
+				<div class="col s10">{{ mesg.message }}</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-content">
+			<input type="text" ng-model="userMessage" id="mesg" />
+		</div>
+	</div>
+
+</div>	
+</body>
+</html>
